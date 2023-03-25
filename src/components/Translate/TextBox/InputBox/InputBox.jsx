@@ -1,4 +1,9 @@
+import { useDispatch } from "react-redux";
+import { setSentence } from "../../../../store/store";
+
 export default function InputBox() {
+const dispatch = useDispatch();
+
   return (
     <>
       <label
@@ -8,6 +13,7 @@ export default function InputBox() {
       <textarea
         className="resize-none block p-9 w-1/2 h-96 text-3xl text-gray-900 bg-gray-50 rounded-lg border border-sky-200 focus:rind-blue-200"
         placeholder="Type to translate..."
+        onChange={e => dispatch(setSentence(e.target.value))}
       ></textarea>
     </>
   );
