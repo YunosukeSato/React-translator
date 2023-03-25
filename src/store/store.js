@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { key } from "../assets/key";
 
 const url = "https://api.openai.com/v1/chat/completions";
 const model = "gpt-3.5-turbo";
@@ -50,7 +51,7 @@ const sendHttpRequest = async (url, method, data) => {
     ? {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer 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",
+          `Bearer ${key}`,
       }
     : {};
 
