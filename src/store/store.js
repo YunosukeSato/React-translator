@@ -8,7 +8,7 @@ const CHANGE_MODE = "change-mode";
 const SET_SENTENCE = "set-sentence";
 const TRANSLATE = "translate";
 const GET_RESULT = "get-result";
-let answer = ""
+let answer = "";
 
 export function changeLang(payload) {
   return {
@@ -41,17 +41,12 @@ export function getAnswer() {
   return answer;
 }
 
-// export function getAnswer() {
-//   return store.getState().result.toString()
-// }
-
 const sendHttpRequest = async (url, method, data) => {
   // define headers only if data is present to minimize object creation
   const headers = data
     ? {
         "Content-Type": "application/json",
-        Authorization:
-          `Bearer ${key}`,
+        Authorization: `Bearer ${key}`,
       }
     : {};
 
@@ -65,6 +60,7 @@ const sendHttpRequest = async (url, method, data) => {
     .catch((error) => console.log(error));
 };
 
+// Function to send a request to translate sentence
 const getResult = async (state) => {
   let level = "";
   switch (state.mode) {
@@ -95,9 +91,8 @@ const getResult = async (state) => {
     ],
   });
 
-  // console.log(result.choices[0].message.content.toString());
-  // newResult(result.choices[0].message.content.toString())
-  answer = result.choices[0].message.content.toString()
+  // Set translated sentence into answer's value
+  answer = result.choices[0].message.content.toString();
 
   return {
     ...state,
