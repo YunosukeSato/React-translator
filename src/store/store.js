@@ -1,3 +1,4 @@
+import { useDispatch } from "react-redux";
 import { combineReducers } from "redux";
 import { key } from "../assets/key";
 
@@ -31,9 +32,10 @@ export function setSentence(payload) {
   };
 }
 
-export function doTranslate() {
+export function doTranslate(payload) {
   return {
     type: TRANSLATE,
+    payload,
   };
 }
 
@@ -41,7 +43,8 @@ export function getAnswer() {
   return answer;
 }
 
-const sendHttpRequest = async (url, method, data) => {
+export const translationRequest = async (state) => {
+  const dispatch = useDispatch();
   // define headers only if data is present to minimize object creation
   const headers = data
     ? {
@@ -50,19 +53,8 @@ const sendHttpRequest = async (url, method, data) => {
       }
     : {};
 
-  /** Change response to the json and handle the error in one place */
-  return await fetch(url, {
-    method,
-    headers,
-    body: data && JSON.stringify(data),
-  })
-    .then((d) => d.json())
-    .catch((error) => console.log(error));
-};
-
-// Function to send a request to translate sentence
-const getResult = async (state) => {
   let level = "";
+
   switch (state.mode) {
     case "Default":
       level = "";
@@ -81,7 +73,8 @@ const getResult = async (state) => {
     default:
       break;
   }
-  const result = await sendHttpRequest(url, "POST", {
+
+  const data = {
     model: model,
     messages: [
       {
@@ -89,16 +82,71 @@ const getResult = async (state) => {
         content: `Translate ${state.sentence} into ${level} ${state.lang}`,
       },
     ],
-  });
-
-  // Set translated sentence into answer's value
-  answer = result.choices[0].message.content.toString();
-
-  return {
-    ...state,
-    result: result.choices[0].message.content.toString(),
   };
+
+  let result = ""
+
+  await fetch(url, {
+    method: "POST",
+    headers,
+    body: data && JSON.stringify(data),
+  })
+    .then((d) => {
+      result = d.json();
+    })
+    .catch((error) => (answer = error.message));
+
+    dispatch(doTranslate(result.choices[0].message.content.toString()));
+
+  /** Change response to the json and handle the error in one place */
+  // return await fetch(url, {
+  //   method,
+  //   headers,
+  //   body: data && JSON.stringify(data),
+  // })
+  //   .then((d) => d.json())
+  //   .catch((error) => (answer = error.message));
 };
+
+// Function to send a request to translate sentence
+// const getResult = async (state) => {
+//   let level = "";
+//   switch (state.mode) {
+//     case "Default":
+//       level = "";
+//       break;
+//     case "Casual":
+//       level = "very casual";
+//       break;
+//     case "Casual 2":
+//       level = "casual";
+//       break;
+//     case "Formal":
+//       level = "formal";
+//       break;
+//     case "Formal 2":
+//       level = "very formal";
+//     default:
+//       break;
+//   }
+//   const result = await sendHttpRequest(url, "POST", {
+//     model: model,
+//     messages: [
+//       {
+//         role: "user",
+//         content: `Translate ${state.sentence} into ${level} ${state.lang}`,
+//       },
+//     ],
+//   });
+
+//   // Set translated sentence into answer's value
+//   answer = result.choices[0].message.content.toString();
+
+//   return {
+//     ...state,
+//     result: result.choices[0].message.content.toString(),
+//   };
+// };
 
 const defaultState = {
   lang: "English",
@@ -125,7 +173,13 @@ function reducer(state = defaultState, action) {
         sentence: action.payload,
       };
     case TRANSLATE:
-      getResult(state);
+      // console.log(getResult(state));
+      // getResult(state);
+      // return new state
+      return {
+        ...state,
+        result: action.payload,
+      };
     case GET_RESULT:
     default:
       return state;

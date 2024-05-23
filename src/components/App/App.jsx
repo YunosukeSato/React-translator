@@ -3,6 +3,7 @@ import "./App.css";
 import Header from "../Header/Header";
 import Translate from "../Translate/Translate";
 import TextBox from "../Translate/TextBox/TextBox";
+import Explain from "../Explain/Explain";
 
 export const ACTIONS = {
   SET_LANG: "set-lang",
@@ -16,6 +17,7 @@ function App() {
       <Header />
       <Translate />
       <TextBox />
+      <Explain />
     </>
   );
 }
