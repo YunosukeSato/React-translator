@@ -70,6 +70,7 @@ export const translationRequest = async (state) => {
       break;
     case "Formal 2":
       level = "very formal";
+      break;
     default:
       break;
   }
