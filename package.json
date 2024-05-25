@@ -15,11 +15,18 @@
     "redux": "^4.2.1"
   },
   "devDependencies": {
+    "@eslint/compat": "^1.0.1",
+    "@eslint/js": "^9.3.0",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.14",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.1",
+    "globals": "^15.3.0",
     "postcss": "^8.4.21",
+    "prettier": "3.2.5",
     "tailwindcss": "^3.2.7",
     "vite": "^4.2.0"
   }
