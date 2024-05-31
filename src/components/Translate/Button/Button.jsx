@@ -3,7 +3,7 @@ import { changeMode } from "../../../store/store";
 
 export default function Button({ string = "Default", margin = "2.5" }) {
   const dispatch = useDispatch();
-  const mode = useSelector((state) => state.reducer.mode);
+  const mode = useSelector((state) => state.translation.mode);
 
   const handleClick = (e) => {
     e.preventDefault();

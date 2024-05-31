@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { doTranslate, getAnswer, translationRequest } from "../../../../store/store";
 
 export default function OutputBox() {
-  const state = useSelector((state) => state.reducer);
+  const state = useSelector((state) => state.translation);
 
   const result = state.result;
 
